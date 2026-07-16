@@ -1,0 +1,9 @@
+{
+  "name": "afterimage-library",
+  "version": "1.0.0",
+  "private": true,
+  "description": "个人影视与书籍记录站",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

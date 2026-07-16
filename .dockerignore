@@ -1,0 +1,7 @@
+.git
+.env
+.env.example
+README.md
+jinyu-portfolio.html
+jinyu-portfolio.css
+node_modules

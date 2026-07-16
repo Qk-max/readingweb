@@ -1,0 +1,7 @@
+.env
+.env.*
+!.env.example
+node_modules/
+greenforest-deploy.tar.gz
+*.log
+coverage/

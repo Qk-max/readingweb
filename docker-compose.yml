@@ -1,0 +1,18 @@
+services:
+  greenforest-reading:
+    build: .
+    container_name: greenforest-reading
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Set ADMIN_PASSWORD in .env}
+    volumes:
+      - ./data:/app/data
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
+    name: nail-appointment_default

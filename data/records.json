@@ -1,0 +1,138 @@
+[
+  {
+    "id": "perfect-days",
+    "type": "film",
+    "typeLabel": "电影",
+    "title": "完美的日子",
+    "byline": "维姆·文德斯 · 2023",
+    "rating": "4.7",
+    "image": "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=700&q=85",
+    "note": "平山把日子过得像一张被仔细折好的纸：没有多余的褶皱，也不急着摊开给谁看。看完后才懂得，重复不是生活的反面；认真感受重复，才是生活本身。",
+    "tags": [
+      "日常",
+      "东京",
+      "孤独"
+    ],
+    "published": true,
+    "updatedAt": "2024-06-18T08:00:00.000Z"
+  },
+  {
+    "id": "norwegian-wood",
+    "type": "book",
+    "typeLabel": "书籍",
+    "title": "挪威的森林",
+    "byline": "村上春树 · 读完于五月",
+    "rating": "4.2",
+    "image": "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=700&q=85",
+    "note": "重读时才发现，这不是一部关于青春的书，而是一部关于人如何带着缺口继续生活的书。那些说不出口的告别，最后都留在了风里。",
+    "tags": [
+      "重读",
+      "成长",
+      "日本文学"
+    ],
+    "published": true,
+    "updatedAt": "2024-06-12T08:00:00.000Z"
+  },
+  {
+    "id": "fallen-leaves",
+    "type": "film",
+    "typeLabel": "电影",
+    "title": "枯叶",
+    "byline": "阿基·考里斯马基 · 2023",
+    "rating": "4.4",
+    "image": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=700&q=85",
+    "note": "在冷得发蓝的赫尔辛基，两个寡言的人终于找到彼此。爱意没有宏大宣言，只有一碗汤、一张纸条和一首收音机里偶然响起的歌。",
+    "tags": [
+      "北欧",
+      "爱情",
+      "极简"
+    ],
+    "published": true,
+    "updatedAt": "2024-06-03T08:00:00.000Z"
+  },
+  {
+    "id": "siddhartha",
+    "type": "book",
+    "typeLabel": "书籍",
+    "title": "悉达多",
+    "byline": "赫尔曼·黑塞 · 阅读中",
+    "rating": "4.5",
+    "image": "https://images.unsplash.com/photo-1511108690759-009324a90311?auto=format&fit=crop&w=700&q=85",
+    "note": "有些答案不能从老师那里获得，也不能从书里找到。河流知道的事情，必须由一个人在漫长的路上慢慢听见。",
+    "tags": [
+      "哲思",
+      "德国文学",
+      "旅行"
+    ],
+    "published": true,
+    "updatedAt": "2024-05-29T08:00:00.000Z"
+  },
+  {
+    "id": "past-lives",
+    "type": "film",
+    "typeLabel": "电影",
+    "title": "过往人生",
+    "byline": "席琳·宋 · 2023",
+    "rating": "4.6",
+    "image": "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?auto=format&fit=crop&w=700&q=85",
+    "note": "它诚实地承认了人生里那些没有抵达的关系。我们并非总要拥有彼此，才能承认那段相遇曾经真实而重要。",
+    "tags": [
+      "纽约",
+      "爱情",
+      "遗憾"
+    ],
+    "published": true,
+    "updatedAt": "2024-05-16T08:00:00.000Z"
+  },
+  {
+    "id": "stolen-focus",
+    "type": "book",
+    "typeLabel": "书籍",
+    "title": "被偷走的专注力",
+    "byline": "约翰·海特 · 2024",
+    "rating": "4.0",
+    "image": "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=700&q=85",
+    "note": "不是意志力出了问题，而是世界一直在争夺我们的注意力。读完决定把手机留在客厅，让晚饭后的一个小时只属于书和自己。",
+    "tags": [
+      "非虚构",
+      "生活方式",
+      "思考"
+    ],
+    "published": true,
+    "updatedAt": "2024-05-08T08:00:00.000Z"
+  },
+  {
+    "id": "summer-walk",
+    "type": "essay",
+    "typeLabel": "随笔",
+    "title": "六月的傍晚适合散步",
+    "byline": "城市漫游 · 06.12",
+    "rating": "随记",
+    "image": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=700&q=85",
+    "note": "下班后绕远路回家，看见一只猫在路灯下伸懒腰。那一瞬间突然觉得，所有没能完成的事，都可以等一等。",
+    "tags": [
+      "城市",
+      "散步",
+      "夏天"
+    ],
+    "published": true,
+    "updatedAt": "2024-06-12T12:00:00.000Z"
+  },
+  {
+    "id": "on-reading",
+    "type": "essay",
+    "typeLabel": "随笔",
+    "title": "为什么还要读纸书",
+    "byline": "阅读手记 · 05.28",
+    "rating": "随记",
+    "image": "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=700&q=85",
+    "note": "纸页不会催促你，也没有红点需要点开。它只是安静地停在桌上，等你在一个合适的下午重新回到它身边。",
+    "tags": [
+      "阅读",
+      "纸书",
+      "日常"
+    ],
+    "published": true,
+    "updatedAt": "2024-05-28T08:00:00.000Z"
+  }
+]

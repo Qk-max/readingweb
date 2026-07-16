@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>绿森林 · 内容管理</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body>
+    <main class="admin-shell">
+      <header><a href="/" class="brand"><span>绿</span>绿森林</a><p>GREEN FOREST · CONTENT DESK</p></header>
+      <section class="login-card" id="login-view">
+        <p class="eyebrow">后台入口</p><h1>欢迎回来。</h1>
+        <form id="login-form"><label>管理密码<input type="password" name="password" required autocomplete="current-password" /></label><button type="submit">进入内容台 <span>↗</span></button></form>
+        <p class="form-message" id="login-message"></p>
+      </section>
+      <section id="admin-view" hidden>
+        <div class="admin-heading"><div><p class="eyebrow">绿森林 / 内容管理</p><h1>书影档案</h1></div><div><button class="subtle-button" id="new-record">新建记录 +</button><button class="subtle-button" id="logout">退出</button></div></div>
+        <div class="admin-grid"><section class="entries"><div class="entries-top"><span id="entry-count">0 则记录</span><span>点击条目编辑</span></div><div id="entry-list"></div></section>
+          <section class="editor"><div class="editor-top"><p class="eyebrow" id="form-mode">新建记录</p><span class="save-state" id="save-state"></span></div>
+            <form id="record-form">
+              <input type="hidden" name="id" />
+              <div class="form-two"><label>类型<select name="type"><option value="film">电影</option><option value="book">书籍</option><option value="essay">随笔</option></select></label><label>评分 / 标记<input name="rating" placeholder="例如 4.5 或 随记" /></label></div>
+              <label>标题<input name="title" required maxlength="80" placeholder="《完美的日子》" /></label>
+              <label>署名与时间<input name="byline" required maxlength="120" placeholder="维姆·文德斯 · 2023" /></label>
+              <label>封面图片 URL<input name="image" type="url" required placeholder="https://..." /></label>
+              <label>标签 <small>用中文或英文逗号分隔</small><input name="tags" placeholder="日常，东京，孤独" /></label>
+              <label>正文<textarea class="note-input" name="note" required maxlength="8000" placeholder="写下这一则记录的感受……"></textarea></label>
+              <label class="publish-field"><input name="published" type="checkbox" checked /><span>公开发布</span></label>
+              <div class="form-actions"><button class="danger-button" id="delete-record" type="button" hidden>删除</button><button class="save-button" type="submit">保存记录 <span>↗</span></button></div>
+            </form>
+          </section>
+        </div>
+      </section>
+    </main>
+    <script src="admin.js"></script>
+  </body>
+</html>
