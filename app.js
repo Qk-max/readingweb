@@ -16,10 +16,10 @@ const archiveDescription = document.querySelector('#archive-description');
 
 const routes = {
   home: { page: 'home', filter: 'all' },
-  archive: { page: 'archive', filter: 'all', index: '02 / 书影档案', title: '收藏一些故事，<br /><em>留下几片树叶。</em>', description: '按下封面，展开一则记录。' },
-  films: { page: 'archive', filter: 'film', index: '02 / 光影漫游', title: '在银幕的光里，<br /><em>看见更多森林。</em>', description: '电影记录、重看笔记与散场后的余温。' },
-  books: { page: 'archive', filter: 'book', index: '03 / 阅读小径', title: '打开一本书，<br /><em>走进另一片森林。</em>', description: '读过的书、划线的句子与缓慢生长的感受。' },
-  essays: { page: 'archive', filter: 'essay', index: '04 / 森林便签', title: '把日常的片刻，<br /><em>夹进一页树叶里。</em>', description: '城市散步、阅读片段和没有标题的心情。' }
+  archive: { page: 'archive', filter: 'all', number: '00', index: '00 / 全部档案', title: '收藏一些故事，<br /><em>留下几片树叶。</em>', description: '按下封面，展开一则记录。' },
+  films: { page: 'archive', filter: 'film', number: '01', index: '01 / 光影漫游', title: '在银幕的光里，<br /><em>看见更多森林。</em>', description: '电影记录、重看笔记与散场后的余温。' },
+  books: { page: 'archive', filter: 'book', number: '02', index: '02 / 阅读小径', title: '打开一本书，<br /><em>走进另一片森林。</em>', description: '读过的书、划线的句子与缓慢生长的感受。' },
+  essays: { page: 'archive', filter: 'essay', number: '03', index: '03 / 森林便签', title: '把日常的片刻，<br /><em>夹进一页树叶里。</em>', description: '城市散步、阅读片段和没有标题的心情。' }
 };
 
 const escapeHTML = value => String(value).replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[char]);
@@ -46,8 +46,7 @@ function updateArchiveHeader() {
   archiveIndex.textContent = route.index;
   archiveTitle.innerHTML = route.title;
   archiveDescription.textContent = route.description;
-  const total = activeFilter === 'all' ? records.length : records.filter(record => record.type === activeFilter).length;
-  routeCount.textContent = String(total).padStart(2, '0');
+  routeCount.textContent = route.number;
 }
 
 function render() {
@@ -118,9 +117,9 @@ document.querySelectorAll('[data-route]').forEach(link => link.addEventListener(
 
 document.querySelectorAll('.filter').forEach(button => button.addEventListener('click', () => {
   activeFilter = button.dataset.filter;
-  activeRoute = 'archive';
+  activeRoute = ({ all: 'archive', film: 'films', book: 'books', essay: 'essays' })[activeFilter];
   document.querySelectorAll('.filter').forEach(item => item.classList.toggle('is-active', item === button));
-  document.querySelectorAll('[data-route]').forEach(link => link.classList.toggle('is-active', link.dataset.route === 'archive'));
+  document.querySelectorAll('[data-route]').forEach(link => link.classList.toggle('is-active', link.dataset.route === activeRoute));
   render();
 }));
 
