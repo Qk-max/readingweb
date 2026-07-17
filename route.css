@@ -41,12 +41,12 @@
 }
 
 #archive .archive-tools {
-  justify-content: space-between;
+  justify-content: flex-start;
   border-bottom: 0;
 }
 
 #archive .search-box {
-  margin-left: 28px;
+  margin-left: 0;
 }
 
 #archive .search-box:focus-within {
@@ -76,7 +76,4 @@
     padding-top: 35px;
   }
 
-  #archive .search-box {
-    margin-left: 0;
-  }
 }

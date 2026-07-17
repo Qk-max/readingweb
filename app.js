@@ -31,14 +31,6 @@ function currentRecords() {
   });
 }
 
-function updateFilterCounts() {
-  document.querySelectorAll('.filter').forEach(button => {
-    const filter = button.dataset.filter;
-    const value = filter === 'all' ? records.length : records.filter(record => record.type === filter).length;
-    button.querySelector('span').textContent = String(value).padStart(2, '0');
-  });
-}
-
 function updateArchiveHeader() {
   const route = routes[activeRoute] || routes.archive;
   if (!route.index) return;
@@ -82,7 +74,6 @@ function applyRoute(routeName, shouldScroll = true) {
   main.dataset.route = activeRoute;
   document.querySelectorAll('[data-page]').forEach(view => view.classList.toggle('is-active', view.dataset.page === route.page));
   document.querySelectorAll('[data-route]').forEach(link => link.classList.toggle('is-active', link.dataset.route === activeRoute));
-  document.querySelectorAll('.filter').forEach(button => button.classList.toggle('is-active', button.dataset.filter === activeFilter));
   render();
   if (shouldScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -97,7 +88,6 @@ async function loadRecords() {
     const response = await fetch('/api/records');
     if (!response.ok) throw new Error('加载失败');
     records = await response.json();
-    updateFilterCounts();
     render();
   } catch {
     grid.innerHTML = '<p class="empty-state">记录暂时无法载入，请稍后再试。</p>';
@@ -110,14 +100,6 @@ document.querySelectorAll('[data-route]').forEach(link => link.addEventListener(
   event.preventDefault();
   if (window.location.hash === `#${route}`) applyRoute(route);
   else window.location.hash = route;
-}));
-
-document.querySelectorAll('.filter').forEach(button => button.addEventListener('click', () => {
-  activeFilter = button.dataset.filter;
-  activeRoute = ({ all: 'archive', film: 'films', book: 'books', essay: 'essays' })[activeFilter];
-  document.querySelectorAll('.filter').forEach(item => item.classList.toggle('is-active', item === button));
-  document.querySelectorAll('[data-route]').forEach(link => link.classList.toggle('is-active', link.dataset.route === activeRoute));
-  render();
 }));
 
 searchInput.addEventListener('input', render);
