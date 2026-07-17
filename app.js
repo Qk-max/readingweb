@@ -11,6 +11,7 @@ const routeCount = document.querySelector('#route-count');
 const archiveIndex = document.querySelector('#archive-index');
 const archiveTitle = document.querySelector('#archive-title');
 const archiveDescription = document.querySelector('#archive-description');
+const searchInput = document.querySelector('#record-search');
 
 const routes = {
   home: { page: 'home', filter: 'all' },
@@ -23,9 +24,9 @@ const routes = {
 const escapeHTML = value => String(value).replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[char]);
 
 function currentRecords() {
-  const query = '';
+  const query = searchInput.value.trim().toLocaleLowerCase('zh-CN');
   return records.filter(record => {
-    const searchable = `${record.title} ${record.byline} ${record.tags.join(' ')}`.toLocaleLowerCase('zh-CN');
+    const searchable = `${record.title} ${record.byline} ${record.tags.join(' ')} ${record.note}`.toLocaleLowerCase('zh-CN');
     return (activeFilter === 'all' || record.type === activeFilter) && (!query || searchable.includes(query));
   });
 }
@@ -118,6 +119,8 @@ document.querySelectorAll('.filter').forEach(button => button.addEventListener('
   document.querySelectorAll('[data-route]').forEach(link => link.classList.toggle('is-active', link.dataset.route === activeRoute));
   render();
 }));
+
+searchInput.addEventListener('input', render);
 
 document.querySelector('.solid-link').addEventListener('click', () => openRecord('perfect-days'));
 document.querySelector('.dialog-close').addEventListener('click', () => dialog.close());

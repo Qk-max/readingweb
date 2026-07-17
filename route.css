@@ -41,7 +41,16 @@
 }
 
 #archive .archive-tools {
-  justify-content: flex-start;
+  justify-content: space-between;
+  border-bottom: 0;
+}
+
+#archive .search-box {
+  margin-left: 28px;
+}
+
+#archive .search-box:focus-within {
+  border-color: var(--orange);
 }
 
 .page-view { display: none; }
@@ -65,5 +74,9 @@
   .archive-page.is-active {
     min-height: calc(100vh - 72px);
     padding-top: 35px;
+  }
+
+  #archive .search-box {
+    margin-left: 0;
   }
 }
