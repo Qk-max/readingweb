@@ -3,8 +3,6 @@ let activeFilter = 'all';
 let activeRoute = 'home';
 
 const grid = document.querySelector('#record-grid');
-const search = document.querySelector('#search');
-const count = document.querySelector('#result-count');
 const empty = document.querySelector('#empty-state');
 const dialog = document.querySelector('#record-dialog');
 const dialogContent = document.querySelector('#dialog-content');
@@ -25,7 +23,7 @@ const routes = {
 const escapeHTML = value => String(value).replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[char]);
 
 function currentRecords() {
-  const query = search.value.trim().toLocaleLowerCase('zh-CN');
+  const query = '';
   return records.filter(record => {
     const searchable = `${record.title} ${record.byline} ${record.tags.join(' ')}`.toLocaleLowerCase('zh-CN');
     return (activeFilter === 'all' || record.type === activeFilter) && (!query || searchable.includes(query));
@@ -59,7 +57,6 @@ function render() {
       </button>
       <div class="record-meta"><h3>${escapeHTML(record.title)}</h3><p>${escapeHTML(record.byline)}<span>↗</span></p></div>
     </article>`).join('');
-  count.textContent = `${String(filtered.length).padStart(2, '0')} 则记录`;
   empty.hidden = filtered.length !== 0;
   grid.querySelectorAll('[data-open]').forEach(button => button.addEventListener('click', () => openRecord(button.dataset.open)));
   updateArchiveHeader();
@@ -81,7 +78,6 @@ function applyRoute(routeName, shouldScroll = true) {
   const route = routes[routeName] || routes.home;
   activeRoute = routes[routeName] ? routeName : 'home';
   activeFilter = route.filter;
-  search.value = '';
   main.dataset.route = activeRoute;
   document.querySelectorAll('[data-page]').forEach(view => view.classList.toggle('is-active', view.dataset.page === route.page));
   document.querySelectorAll('[data-route]').forEach(link => link.classList.toggle('is-active', link.dataset.route === activeRoute));
@@ -123,7 +119,6 @@ document.querySelectorAll('.filter').forEach(button => button.addEventListener('
   render();
 }));
 
-search.addEventListener('input', render);
 document.querySelector('.solid-link').addEventListener('click', () => openRecord('perfect-days'));
 document.querySelector('.dialog-close').addEventListener('click', () => dialog.close());
 dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });

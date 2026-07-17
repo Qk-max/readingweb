@@ -40,6 +40,10 @@
   background: var(--orange);
 }
 
+#archive .archive-tools {
+  justify-content: flex-start;
+}
+
 .page-view { display: none; }
 
 .page-view.is-active {
