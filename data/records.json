@@ -4,17 +4,13 @@
     "type": "film",
     "typeLabel": "电影",
     "title": "完美的日子",
-    "byline": "维姆·文德斯 · 2023",
+    "byline": "2026.1717",
     "rating": "4.7",
     "image": "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=700&q=85",
-    "note": "平山把日子过得像一张被仔细折好的纸：没有多余的褶皱，也不急着摊开给谁看。看完后才懂得，重复不是生活的反面；认真感受重复，才是生活本身。",
-    "tags": [
-      "日常",
-      "东京",
-      "孤独"
-    ],
+    "note": "阿斯顿",
+    "tags": [],
     "published": true,
-    "updatedAt": "2024-06-18T08:00:00.000Z"
+    "updatedAt": "2026-07-17T09:31:19.313Z"
   },
   {
     "id": "norwegian-wood",
