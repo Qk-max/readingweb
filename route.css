@@ -1,0 +1,46 @@
+.site-header nav { gap: 27px; }
+
+.route-nav a {
+  position: relative;
+  padding: 7px 0;
+}
+
+.route-nav a.is-active {
+  color: var(--green);
+  font-weight: 700;
+}
+
+.route-nav a.is-active::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  content: "";
+  background: var(--orange);
+  transform: rotate(-2deg);
+}
+
+.page-view { display: none; }
+
+.page-view.is-active {
+  display: block;
+  animation: route-page-in 420ms ease both;
+}
+
+.archive-page.is-active {
+  min-height: calc(100vh - 89px);
+  padding-top: 76px;
+}
+
+@keyframes route-page-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 780px) {
+  .archive-page.is-active {
+    min-height: calc(100vh - 72px);
+    padding-top: 35px;
+  }
+}

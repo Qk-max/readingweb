@@ -37,9 +37,9 @@ function safeEqual(a, b) { const aa = Buffer.from(a || ''); const bb = Buffer.fr
 async function serveFile(request, response, pathname) {
   const requested = pathname === '/' ? 'index.html' : pathname === '/admin' ? 'admin.html' : pathname.slice(1);
   const file = path.resolve(root, requested);
-  const publicFiles = new Set(['index.html', 'admin.html', 'app.js', 'admin.js', 'styles.css', 'admin.css']);
+  const publicFiles = new Set(['index.html', 'admin.html', 'app.js', 'admin.js', 'styles.css', 'route.css', 'admin.css']);
   if (!file.startsWith(root) || !publicFiles.has(requested)) return send(response, 404, 'Not found');
-  try { const content = await fs.readFile(file); send(response, 200, content, { 'Content-Type':mime[path.extname(file)] || 'application/octet-stream', 'Cache-Control':file.endsWith('.html') ? 'no-cache' : 'public, max-age=3600' }); } catch { send(response, 404, 'Not found'); }
+  try { const content = await fs.readFile(file); const extension = path.extname(file); const cacheControl = ['.html', '.js', '.css'].includes(extension) ? 'no-cache' : 'public, max-age=3600'; send(response, 200, content, { 'Content-Type':mime[extension] || 'application/octet-stream', 'Cache-Control':cacheControl }); } catch { send(response, 404, 'Not found'); }
 }
 
 http.createServer(async (request, response) => {
@@ -62,4 +62,4 @@ http.createServer(async (request, response) => {
     if (match && request.method === 'DELETE') { if (!requireAdmin(request, response)) return; const records = await readRecords(); const next = records.filter(record => record.id !== match[1]); if (next.length === records.length) return json(response, 404, { error:'记录不存在。' }); await saveRecords(next); return json(response, 200, { deleted:true }); }
     return serveFile(request, response, decodeURIComponent(url.pathname));
   } catch (error) { console.error(error); return json(response, 400, { error:error.message || '服务器发生错误。' }); }
-}).listen(port, () => console.log(`余映运行于 http://127.0.0.1:${port}`));
+}).listen(port, () => console.log(`绿森林运行于 http://127.0.0.1:${port}`));

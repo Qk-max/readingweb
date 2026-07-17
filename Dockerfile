@@ -3,7 +3,7 @@ FROM node:24-alpine
 WORKDIR /app
 COPY package.json ./
 COPY server.js ./
-COPY index.html styles.css app.js ./
+COPY index.html styles.css route.css app.js ./
 COPY admin.html admin.css admin.js ./
 COPY data ./data
 
