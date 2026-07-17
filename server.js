@@ -7,6 +7,9 @@ const root = __dirname;
 const dataFile = path.join(root, 'data', 'records.json');
 const port = Number(process.env.PORT || 3000);
 const adminPassword = process.env.ADMIN_PASSWORD;
+const githubToken = process.env.GITHUB_TOKEN;
+const githubRepo = process.env.GITHUB_REPO || 'Qk-max/readingweb';
+const githubBranch = process.env.GITHUB_BRANCH || 'main';
 const sessions = new Map();
 const mime = { '.html':'text/html; charset=utf-8', '.js':'application/javascript; charset=utf-8', '.css':'text/css; charset=utf-8', '.json':'application/json; charset=utf-8', '.ico':'image/x-icon', '.png':'image/png', '.svg':'image/svg+xml' };
 
@@ -21,6 +24,23 @@ function requireAdmin(request, response) { if (!isAdmin(request)) { json(respons
 async function readBody(request) { let result = ''; for await (const chunk of request) { result += chunk; if (result.length > 200000) throw new Error('请求内容过大'); } try { return JSON.parse(result || '{}'); } catch { throw new Error('请求数据格式不正确'); } }
 async function readRecords() { return JSON.parse(await fs.readFile(dataFile, 'utf8')); }
 async function saveRecords(records) { await fs.writeFile(dataFile, JSON.stringify(records, null, 2) + '\n', 'utf8'); }
+async function syncRecordsToGitHub(records) {
+  if (!githubToken) return { enabled:false, ok:false, message:'已保存；GitHub 自动备份尚未配置。' };
+  const endpoint = `https://api.github.com/repos/${githubRepo}/contents/data/records.json`;
+  const headers = { Accept:'application/vnd.github+json', Authorization:`Bearer ${githubToken}`, 'User-Agent':'greenforest-reading-site', 'X-GitHub-Api-Version':'2022-11-28' };
+  const current = await fetch(`${endpoint}?ref=${encodeURIComponent(githubBranch)}`, { headers });
+  let sha;
+  if (current.ok) sha = (await current.json()).sha;
+  else if (current.status !== 404) throw new Error(`GitHub 读取失败（${current.status}）。`);
+  const update = await fetch(endpoint, { method:'PUT', headers:{ ...headers, 'Content-Type':'application/json' }, body:JSON.stringify({ message:`content: sync records ${new Date().toISOString()}`, content:Buffer.from(JSON.stringify(records, null, 2) + '\n').toString('base64'), branch:githubBranch, ...(sha ? { sha } : {}) }) });
+  if (!update.ok) throw new Error(`GitHub 写入失败（${update.status}）。`);
+  return { enabled:true, ok:true, message:'已保存并同步到 GitHub。' };
+}
+async function persistRecords(records) {
+  await saveRecords(records);
+  try { return await syncRecordsToGitHub(records); }
+  catch (error) { console.error('GitHub records sync failed:', error.message); return { enabled:true, ok:false, message:'已保存；GitHub 同步失败，将在下次编辑时重试。' }; }
+}
 function cleanRecord(input, previous = {}) {
   const type = ['film','book','essay'].includes(input.type) ? input.type : previous.type || 'film';
   const typeLabel = { film:'电影', book:'书籍', essay:'随笔' }[type];
@@ -56,10 +76,10 @@ http.createServer(async (request, response) => {
       return json(response, 200, { authenticated:true }, { 'Set-Cookie':`afterimage_session=${token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=43200${process.env.NODE_ENV === 'production' ? '; Secure' : ''}` });
     }
     if (request.method === 'POST' && url.pathname === '/api/auth/logout') { const token = parseCookies(request).afterimage_session; sessions.delete(token); return json(response, 200, { authenticated:false }, { 'Set-Cookie':'afterimage_session=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0' }); }
-    if (request.method === 'POST' && url.pathname === '/api/admin/records') { if (!requireAdmin(request, response)) return; const records = await readRecords(); const record = cleanRecord(await readBody(request)); record.id = crypto.randomUUID(); records.unshift(record); await saveRecords(records); return json(response, 201, record); }
+    if (request.method === 'POST' && url.pathname === '/api/admin/records') { if (!requireAdmin(request, response)) return; const records = await readRecords(); const record = cleanRecord(await readBody(request)); record.id = crypto.randomUUID(); records.unshift(record); const sync = await persistRecords(records); return json(response, 201, { record, sync }); }
     const match = url.pathname.match(/^\/api\/admin\/records\/([\w-]+)$/);
-    if (match && request.method === 'PUT') { if (!requireAdmin(request, response)) return; const records = await readRecords(); const index = records.findIndex(record => record.id === match[1]); if (index < 0) return json(response, 404, { error:'记录不存在。' }); records[index] = cleanRecord(await readBody(request), records[index]); await saveRecords(records); return json(response, 200, records[index]); }
-    if (match && request.method === 'DELETE') { if (!requireAdmin(request, response)) return; const records = await readRecords(); const next = records.filter(record => record.id !== match[1]); if (next.length === records.length) return json(response, 404, { error:'记录不存在。' }); await saveRecords(next); return json(response, 200, { deleted:true }); }
+    if (match && request.method === 'PUT') { if (!requireAdmin(request, response)) return; const records = await readRecords(); const index = records.findIndex(record => record.id === match[1]); if (index < 0) return json(response, 404, { error:'记录不存在。' }); records[index] = cleanRecord(await readBody(request), records[index]); const sync = await persistRecords(records); return json(response, 200, { record:records[index], sync }); }
+    if (match && request.method === 'DELETE') { if (!requireAdmin(request, response)) return; const records = await readRecords(); const next = records.filter(record => record.id !== match[1]); if (next.length === records.length) return json(response, 404, { error:'记录不存在。' }); const sync = await persistRecords(next); return json(response, 200, { deleted:true, sync }); }
     return serveFile(request, response, decodeURIComponent(url.pathname));
   } catch (error) { console.error(error); return json(response, 400, { error:error.message || '服务器发生错误。' }); }
 }).listen(port, () => console.log(`绿森林运行于 http://127.0.0.1:${port}`));

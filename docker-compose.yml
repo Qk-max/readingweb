@@ -7,6 +7,9 @@ services:
       NODE_ENV: production
       PORT: 3000
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Set ADMIN_PASSWORD in .env}
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+      GITHUB_REPO: ${GITHUB_REPO:-Qk-max/readingweb}
+      GITHUB_BRANCH: ${GITHUB_BRANCH:-main}
     volumes:
       - ./data:/app/data
     networks:
