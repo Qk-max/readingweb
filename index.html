@@ -8,14 +8,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css?v=1.1.6" />
-    <link rel="stylesheet" href="route.css?v=1.1.6" />
+    <link rel="stylesheet" href="styles.css?v=1.2.1" />
+    <link rel="stylesheet" href="route.css?v=1.2.1" />
   </head>
   <body>
     <div class="paper-grain" aria-hidden="true"></div>
     <header class="site-header shell">
       <a class="brand" href="#top" aria-label="绿森林首页"><span>绿</span><strong>绿森林</strong><i>GREEN FOREST</i></a>
-      <nav class="route-nav" aria-label="主导航"><a href="#home" data-route="home">首页</a><a href="#films" data-route="films">电影</a><a href="#books" data-route="books">书籍</a><a href="#essays" data-route="essays">随笔</a><a href="#archive" data-route="archive">全部档案</a></nav>
+      <nav class="route-nav" aria-label="主导航"><a href="#home" data-route="home">首页</a><a href="#films" data-route="films">电影</a><a href="#books" data-route="books">书籍</a><a href="#essays" data-route="essays">随笔</a><a href="#archive" data-route="archive">全部档案</a><a href="#yearbook" data-route="yearbook">年轮</a><a href="#collections" data-route="collections">专题</a></nav>
       <a class="archive-link" href="/admin">管理档案 <b>↗</b></a>
     </header>
 
@@ -54,12 +54,22 @@
         <div class="record-grid" id="record-grid"></div><p class="empty-state" id="empty-state" hidden>没有找到这则记录，换一个词试试。</p>
       </section>
 
+      <section class="archive shell page-view archive-page yearbook-page" id="yearbook" data-page="yearbook">
+        <div class="archive-heading"><div><p class="small-title">04 / 森林年轮</p><h2>把走过的日子，<br /><em>一页页收进年轮。</em></h2></div><div class="archive-aside"><span>按完成日期，回望读过与看过的故事。</span><b>04</b><small>READING<br />DIARY</small></div></div>
+        <div class="timeline" id="timeline"></div><p class="empty-state" id="timeline-empty" hidden>还没有可以写进年轮的记录。</p>
+      </section>
+
+      <section class="archive shell page-view archive-page collections-page" id="collections" data-page="collections">
+        <div class="archive-heading"><div><p class="small-title">05 / 主题枝条</p><h2>让一些故事，<br /><em>在同一根枝头相遇。</em></h2></div><div class="archive-aside"><span>从标签与感受里长出的私人专题。</span><b>05</b><small>CURATED<br />SHELVES</small></div></div>
+        <div class="collection-grid" id="collection-grid"></div><p class="empty-state" id="collection-empty" hidden>再写几则记录，专题枝条就会慢慢长出来。</p>
+      </section>
+
       <section class="notes page-view home-page" id="notes" data-page="home"><div class="shell notes-layout"><p class="small-title">03 / 森林便签</p><blockquote>“真正的阅读，是允许一本书<br />在自己的生活里慢慢发生。”</blockquote><div><p>写在六月的午后。窗外有雨，书摊开在第 143 页，茶已经凉了。</p></div><span class="notes-star">✳</span></div></section>
 
       <section class="about shell page-view home-page" id="about" data-page="home"><div class="about-stamp">GF<br />2024</div><div><p class="small-title">04 / 关于</p><h2>愿每一次观看，<br />都成为一次散步。</h2></div><div class="about-copy"><p>我是阿远。在城市里工作、走路、看电影，也总有一本读到一半的书。绿森林不是评分网站，只是给一些珍贵感受留的位置。</p></div></section>
     </main>
     <footer class="shell"><a class="brand" href="#top"><span>绿</span><strong>绿森林</strong></a><p>© 2024 · 在感受里漫游。</p><a href="#top">回到顶部 ↑</a></footer>
     <dialog class="record-dialog" id="record-dialog"><button class="dialog-close" aria-label="关闭详情">×</button><div id="dialog-content"></div></dialog>
-    <script src="app.js?v=1.1.6"></script>
+    <script src="app.js?v=1.2.1"></script>
   </body>
 </html>

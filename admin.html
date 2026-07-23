@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="admin.css" />
+    <link rel="stylesheet" href="admin.css?v=1.2.1" />
   </head>
   <body>
     <main class="admin-shell">
@@ -19,14 +19,15 @@
         <p class="form-message" id="login-message"></p>
       </section>
       <section id="admin-view" hidden>
-        <div class="admin-heading"><div><p class="eyebrow">绿森林 / 内容管理</p><h1>书影档案</h1></div><div><button class="subtle-button" id="new-record">新建记录 +</button><button class="subtle-button" id="logout">退出</button></div></div>
-        <div class="admin-grid"><section class="entries"><div class="entries-top"><span id="entry-count">0 则记录</span><span>点击条目编辑</span></div><div id="entry-list"></div></section>
+        <div class="admin-heading"><div><p class="eyebrow">绿森林 / 内容管理</p><h1>书影档案</h1></div><div><button class="subtle-button" id="show-records">记录 / 年轮</button><button class="subtle-button" id="show-collections">专题管理</button><button class="subtle-button" id="new-record">新建记录 +</button><button class="subtle-button" id="logout">退出</button></div></div>
+        <div id="record-manager"><p class="manager-hint">每则公开记录都会进入「森林年轮」；填写完成日期即可调整它在年轮里的位置。</p><div class="admin-grid"><section class="entries"><div class="entries-top"><span id="entry-count">0 则记录</span><span>点击条目编辑</span></div><div id="entry-list"></div></section>
           <section class="editor"><div class="editor-top"><p class="eyebrow" id="form-mode">新建记录</p><span class="save-state" id="save-state"></span></div>
             <form id="record-form">
               <input type="hidden" name="id" />
               <div class="form-two"><label>类型<select name="type"><option value="film">电影</option><option value="book">书籍</option><option value="essay">随笔</option></select></label><label>评分 / 标记<input name="rating" placeholder="例如 4.5 或 随记" /></label></div>
               <label>标题<input name="title" required maxlength="80" placeholder="《完美的日子》" /></label>
               <label>署名与时间<input name="byline" required maxlength="120" placeholder="维姆·文德斯 · 2023" /></label>
+              <div class="form-two"><label>完成日期 <small>看完 / 读完当天</small><input name="completedAt" type="date" /></label><label>专题集合 <small>可选，同名记录会聚成一页</small><input name="collection" maxlength="36" placeholder="例如：下雨天看的电影" /></label></div>
               <label>封面图片 URL<input name="image" type="url" required placeholder="https://..." /></label>
               <label>标签 <small>用中文或英文逗号分隔</small><input name="tags" placeholder="日常，东京，孤独" /></label>
               <label>正文<textarea class="note-input" name="note" required maxlength="8000" placeholder="写下这一则记录的感受……"></textarea></label>
@@ -34,9 +35,10 @@
               <div class="form-actions"><button class="danger-button" id="delete-record" type="button" hidden>删除</button><button class="save-button" type="submit">保存记录 <span>↗</span></button></div>
             </form>
           </section>
-        </div>
+        </div></div>
+        <section class="collection-manager" id="collection-manager" hidden><div class="collection-admin-head"><div><p class="eyebrow">主题枝条 / 专题书单 · 片单</p><p class="manager-hint">新建一个专题，再勾选要收录的书、电影或随笔。</p></div><button class="subtle-button" id="new-collection">新建专题 +</button></div><div class="admin-grid"><section class="entries"><div class="entries-top"><span id="collection-count">0 个专题</span><span>点击专题编辑</span></div><div id="collection-list"></div></section><section class="editor"><div class="editor-top"><p class="eyebrow" id="collection-form-mode">新建专题</p><span class="save-state" id="collection-save-state"></span></div><form id="collection-form"><input type="hidden" name="id" /><label>专题名称<input name="title" required maxlength="60" placeholder="例如：下雨天看的电影" /></label><label>一句简介<textarea name="description" required maxlength="240" placeholder="给这组故事写一句引言……"></textarea></label><fieldset class="collection-record-picker"><legend>收录记录</legend><div id="collection-records"></div></fieldset><div class="form-actions"><button class="danger-button" id="delete-collection" type="button" hidden>删除专题</button><button class="save-button" type="submit">保存专题 <span>↗</span></button></div></form></section></div></section>
       </section>
     </main>
-    <script src="admin.js?v=1.1.3"></script>
+    <script src="admin.js?v=1.2.1"></script>
   </body>
 </html>

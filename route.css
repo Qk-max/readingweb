@@ -1,4 +1,4 @@
-.site-header nav { gap: 27px; }
+.site-header nav { gap: 21px; margin-left: 32px; }
 
 .route-nav a {
   position: relative;
@@ -19,25 +19,6 @@
   content: "";
   background: var(--orange);
   transform: rotate(-2deg);
-}
-
-#archive .filter.is-active,
-#archive .filter:nth-child(2).is-active,
-#archive .filter:nth-child(3).is-active {
-  color: var(--green);
-  background: transparent;
-  border-color: transparent;
-  box-shadow: none;
-  transform: none;
-}
-
-#archive .filter.is-active::after {
-  display: block;
-  width: 100%;
-  height: 2px;
-  margin-top: 5px;
-  content: "";
-  background: var(--orange);
 }
 
 #archive .archive-tools {
@@ -65,6 +46,73 @@
   padding-top: 76px;
 }
 
+.yearbook-page .archive-heading,
+.collections-page .archive-heading {
+  padding-bottom: 35px;
+}
+
+.timeline { border-top: 1px solid var(--line); }
+
+.timeline-year { display:grid; grid-template-columns:165px 1fr; border-bottom:1px solid var(--line); padding:29px 0; }
+
+.timeline-year-label { margin:0; color:var(--orange); font:54px/.85 var(--serif); letter-spacing:-.09em; }
+
+.timeline-list { display:grid; gap:0; }
+
+.timeline-entry { display:grid; grid-template-columns:95px 1fr; min-height:92px; border-top:1px solid var(--line); }
+
+.timeline-entry:first-child { border-top:0; }
+
+.timeline-date { margin:17px 0 0; color:var(--green); font:10px var(--mono); letter-spacing:.04em; }
+
+.timeline-record { width:100%; display:grid; grid-template-columns:54px 1fr auto; gap:13px; align-items:center; padding:10px 0; border:0; background:transparent; color:var(--ink); text-align:left; cursor:pointer; }
+
+.timeline-record:hover strong { color:var(--orange); }
+
+.timeline-record img { width:54px; height:70px; object-fit:cover; filter:saturate(.65); }
+
+.timeline-record span { display:grid; gap:4px; }
+
+.timeline-record i,.timeline-record small { color:var(--muted); font-size:10px; font-style:normal; }
+
+.timeline-record i { color:var(--green); font-family:var(--mono); letter-spacing:.05em; }
+
+.timeline-record strong { font:500 20px var(--serif); letter-spacing:-.05em; transition:color .2s; }
+
+.timeline-record b { align-self:start; margin-top:11px; color:var(--orange); font:11px var(--mono); font-weight:400; }
+
+.collection-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+
+.collection-card { min-height:380px; padding:20px; border:1px solid var(--line); background:#faf6ee; display:flex; flex-direction:column; }
+
+.collection-card:nth-child(2n) { transform:rotate(.5deg); background:#f1f0df; }
+
+.collection-card:nth-child(3n) { transform:rotate(-.5deg); background:#f7eee1; }
+
+.collection-card-top { display:flex; justify-content:space-between; align-items:start; }
+
+.collection-card-top span { color:var(--orange); font-size:25px; }
+
+.collection-card h3 { margin:28px 0 10px; font:500 31px/1.2 var(--serif); letter-spacing:-.07em; }
+
+.collection-card>p { min-height:43px; margin:0; color:var(--muted); font-size:12px; line-height:1.75; }
+
+.collection-covers { display:flex; align-items:end; min-height:148px; margin-top:auto; padding-top:23px; }
+
+.collection-covers button { width:39%; aspect-ratio:.69; margin-left:-8%; padding:0; overflow:hidden; border:2px solid #faf6ee; background:var(--paper); cursor:pointer; box-shadow:2px 3px 0 rgba(48,48,46,.14); transform:rotate(-3deg); }
+
+.collection-covers button:first-child { margin-left:0; transform:rotate(2deg); }
+
+.collection-covers button:nth-child(3) { transform:rotate(4deg); }
+
+.collection-covers img { width:100%; height:100%; object-fit:cover; filter:saturate(.65); transition:filter .2s, transform .2s; }
+
+.collection-covers button:hover img { filter:saturate(1); transform:scale(1.05); }
+
+.collection-card>small { display:block; min-height:31px; margin-top:18px; color:var(--green); font:9px/1.5 var(--mono); }
+
+.dialog-date { margin:-19px 0 25px; color:var(--green); font:10px var(--mono); letter-spacing:.04em; }
+
 @keyframes route-page-in {
   from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
@@ -75,5 +123,23 @@
     min-height: calc(100vh - 72px);
     padding-top: 35px;
   }
+
+  .timeline-year { grid-template-columns:76px 1fr; padding:23px 0; }
+
+  .timeline-year-label { font-size:38px; }
+
+  .timeline-entry { grid-template-columns:1fr; padding:10px 0; }
+
+  .timeline-date { margin:0 0 4px; }
+
+  .timeline-record { grid-template-columns:45px 1fr auto; gap:10px; padding:3px 0; }
+
+  .timeline-record img { width:45px; height:58px; }
+
+  .timeline-record strong { font-size:18px; }
+
+  .collection-grid { grid-template-columns:1fr; gap:15px; }
+
+  .collection-card { min-height:335px; }
 
 }

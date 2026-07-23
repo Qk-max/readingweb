@@ -1,0 +1,42 @@
+[
+  {
+    "title": "下雨天看的书",
+    "description": "潮湿、温暖的记忆",
+    "recordIds": [
+      "past-lives"
+    ],
+    "updatedAt": "2026-07-23T03:11:44.542Z",
+    "id": "4679b920-974f-4fd9-a56f-b8a4ad3b3dd9"
+  },
+  {
+    "id": "slow-days",
+    "title": "把日子慢下来",
+    "description": "纸页、日常与不必着急抵达的时刻。",
+    "recordIds": [
+      "siddhartha",
+      "stolen-focus",
+      "on-reading"
+    ]
+  },
+  {
+    "id": "city-walks",
+    "title": "城市漫游",
+    "description": "散步、路灯与发生在街角的片刻。",
+    "recordIds": [
+      "fallen-leaves",
+      "past-lives",
+      "summer-walk"
+    ]
+  },
+  {
+    "id": "departures",
+    "title": "远行与告别",
+    "description": "离开、重读，以及仍然在风里的故事。",
+    "recordIds": [
+      "norwegian-wood",
+      "fallen-leaves",
+      "siddhartha",
+      "past-lives"
+    ]
+  }
+]

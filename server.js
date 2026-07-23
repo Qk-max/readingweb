@@ -5,6 +5,7 @@ const crypto = require('node:crypto');
 
 const root = __dirname;
 const dataFile = path.join(root, 'data', 'records.json');
+const collectionsFile = path.join(root, 'data', 'collections.json');
 const port = Number(process.env.PORT || 3000);
 const adminPassword = process.env.ADMIN_PASSWORD;
 const githubToken = process.env.GITHUB_TOKEN;
@@ -36,6 +37,20 @@ async function syncRecordsToGitHub(records) {
   if (!update.ok) throw new Error(`GitHub 写入失败（${update.status}）。`);
   return { enabled:true, ok:true, message:'已保存并同步到 GitHub。' };
 }
+const collectionSeeds = [
+  { id:'slow-days', title:'把日子慢下来', description:'纸页、日常与不必着急抵达的时刻。', recordIds:['siddhartha', 'stolen-focus', 'on-reading'] },
+  { id:'city-walks', title:'城市漫游', description:'散步、路灯与发生在街角的片刻。', recordIds:['fallen-leaves', 'past-lives', 'summer-walk'] },
+  { id:'departures', title:'远行与告别', description:'离开、重读，以及仍然在风里的故事。', recordIds:['norwegian-wood', 'fallen-leaves', 'siddhartha', 'past-lives'] }
+];
+async function readCollections() {
+  try { return JSON.parse(await fs.readFile(collectionsFile, 'utf8')); }
+  catch (error) {
+    if (error.code !== 'ENOENT') throw error;
+    await saveCollections(collectionSeeds);
+    return collectionSeeds;
+  }
+}
+async function saveCollections(collections) { await fs.writeFile(collectionsFile, JSON.stringify(collections, null, 2) + '\n', 'utf8'); }
 async function persistRecords(records) {
   await saveRecords(records);
   try { return await syncRecordsToGitHub(records); }
@@ -48,10 +63,20 @@ function cleanRecord(input, previous = {}) {
   const byline = String(input.byline || '').trim().slice(0, 120);
   const note = String(input.note || '').trim().slice(0, 8000);
   const image = String(input.image || '').trim().slice(0, 1200);
+  const completedAt = String(input.completedAt || '').trim();
+  const collection = String(input.collection ?? previous.collection ?? '').trim().slice(0, 36);
   if (!title || !byline || !note || !image) throw new Error('标题、署名、图片链接和正文均为必填。');
   if (!/^https?:\/\//i.test(image)) throw new Error('图片必须是 http 或 https 链接。');
   const tags = Array.isArray(input.tags) ? input.tags : String(input.tags || '').split(/[,，]/);
-  return { ...previous, type, typeLabel, title, byline, note, image, rating:String(input.rating || '').trim().slice(0, 12) || '未评分', tags:tags.map(tag => String(tag).trim().slice(0, 24)).filter(Boolean).slice(0, 8), published:Boolean(input.published), updatedAt:new Date().toISOString() };
+  if (completedAt && !/^\d{4}-\d{2}-\d{2}$/.test(completedAt)) throw new Error('完成日期格式不正确。');
+  return { ...previous, type, typeLabel, title, byline, note, image, rating:String(input.rating || '').trim().slice(0, 12) || '未评分', completedAt, collection, tags:tags.map(tag => String(tag).trim().slice(0, 24)).filter(Boolean).slice(0, 8), published:Boolean(input.published), updatedAt:new Date().toISOString() };
+}
+function cleanCollection(input, previous = {}) {
+  const title = String(input.title || '').trim().slice(0, 60);
+  const description = String(input.description || '').trim().slice(0, 240);
+  if (!title || !description) throw new Error('专题名称和简介均为必填。');
+  const recordIds = Array.isArray(input.recordIds) ? input.recordIds : [];
+  return { ...previous, title, description, recordIds:[...new Set(recordIds.map(String).filter(Boolean))].slice(0, 100), updatedAt:new Date().toISOString() };
 }
 function safeEqual(a, b) { const aa = Buffer.from(a || ''); const bb = Buffer.from(b || ''); return aa.length === bb.length && crypto.timingSafeEqual(aa, bb); }
 async function serveFile(request, response, pathname) {
@@ -66,7 +91,9 @@ http.createServer(async (request, response) => {
   const url = new URL(request.url, `http://${request.headers.host}`);
   try {
     if (request.method === 'GET' && url.pathname === '/api/records') { const records = await readRecords(); return json(response, 200, records.filter(record => record.published)); }
+    if (request.method === 'GET' && url.pathname === '/api/collections') return json(response, 200, await readCollections());
     if (request.method === 'GET' && url.pathname === '/api/admin/records') { if (!requireAdmin(request, response)) return; return json(response, 200, await readRecords()); }
+    if (request.method === 'GET' && url.pathname === '/api/admin/collections') { if (!requireAdmin(request, response)) return; return json(response, 200, await readCollections()); }
     if (request.method === 'GET' && url.pathname === '/api/auth/session') return json(response, 200, { authenticated:isAdmin(request) });
     if (request.method === 'POST' && url.pathname === '/api/auth/login') {
       if (!adminPassword) return json(response, 503, { error:'服务器尚未配置 ADMIN_PASSWORD。' });
@@ -77,6 +104,10 @@ http.createServer(async (request, response) => {
     }
     if (request.method === 'POST' && url.pathname === '/api/auth/logout') { const token = parseCookies(request).afterimage_session; sessions.delete(token); return json(response, 200, { authenticated:false }, { 'Set-Cookie':'afterimage_session=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0' }); }
     if (request.method === 'POST' && url.pathname === '/api/admin/records') { if (!requireAdmin(request, response)) return; const records = await readRecords(); const record = cleanRecord(await readBody(request)); record.id = crypto.randomUUID(); records.unshift(record); const sync = await persistRecords(records); return json(response, 201, { record, sync }); }
+    if (request.method === 'POST' && url.pathname === '/api/admin/collections') { if (!requireAdmin(request, response)) return; const collections = await readCollections(); const collection = cleanCollection(await readBody(request)); collection.id = crypto.randomUUID(); collections.unshift(collection); await saveCollections(collections); return json(response, 201, { collection, message:'专题已保存。' }); }
+    const collectionMatch = url.pathname.match(/^\/api\/admin\/collections\/([\w-]+)$/);
+    if (collectionMatch && request.method === 'PUT') { if (!requireAdmin(request, response)) return; const collections = await readCollections(); const index = collections.findIndex(collection => collection.id === collectionMatch[1]); if (index < 0) return json(response, 404, { error:'专题不存在。' }); collections[index] = cleanCollection(await readBody(request), collections[index]); await saveCollections(collections); return json(response, 200, { collection:collections[index], message:'专题已保存。' }); }
+    if (collectionMatch && request.method === 'DELETE') { if (!requireAdmin(request, response)) return; const collections = await readCollections(); const next = collections.filter(collection => collection.id !== collectionMatch[1]); if (next.length === collections.length) return json(response, 404, { error:'专题不存在。' }); await saveCollections(next); return json(response, 200, { deleted:true, message:'专题已删除。' }); }
     const match = url.pathname.match(/^\/api\/admin\/records\/([\w-]+)$/);
     if (match && request.method === 'PUT') { if (!requireAdmin(request, response)) return; const records = await readRecords(); const index = records.findIndex(record => record.id === match[1]); if (index < 0) return json(response, 404, { error:'记录不存在。' }); records[index] = cleanRecord(await readBody(request), records[index]); const sync = await persistRecords(records); return json(response, 200, { record:records[index], sync }); }
     if (match && request.method === 'DELETE') { if (!requireAdmin(request, response)) return; const records = await readRecords(); const next = records.filter(record => record.id !== match[1]); if (next.length === records.length) return json(response, 404, { error:'记录不存在。' }); const sync = await persistRecords(next); return json(response, 200, { deleted:true, sync }); }
